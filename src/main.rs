@@ -144,9 +144,9 @@ async fn main() {
     }
 
     let args: Vec<String> = std::env::args().collect();
-    let base_url : &str = "www.syntax.eco";
-    let mut setup_url : &str = "setup.syntax.eco";
-    let fallback_setup_url : &str = "d2f3pa9j0u8v6f.cloudfront.net";
+    let base_url : &str = "www.rfblx.shop";
+    let mut setup_url : &str = "setup.rfblx.shop";
+    let fallback_setup_url : &str = "rfblx.shop";
     let mut bootstrapper_filename :&str = "SyntaxPlayerLauncher.exe";
     #[cfg(not(target_os = "windows"))]
     {
@@ -247,13 +247,13 @@ async fn main() {
     // Is the program currently running from the latest version directory?
     let current_exe_path = std::env::current_exe().unwrap();
     // If the current exe path is not in the current version directory, then we need to run the latest bootstrapper ( download if needed )
-    if !current_exe_path.starts_with(&current_version_directory) {
+    //if !current_exe_path.starts_with(&current_version_directory) {
         // Check if the latest bootstrapper is downloaded
-        if !latest_bootstrapper_path.exists() {
-            info("Downloading the latest bootstrapper");
-            // Download the latest bootstrapper
-            download_file(&http_client, &format!("https://{}/{}-{}", setup_url, latest_client_version, bootstrapper_filename), &latest_bootstrapper_path).await;
-        }
+        //if !latest_bootstrapper_path.exists() {
+        //    info("Downloading the latest bootstrapper");
+        //    // Download the latest bootstrapper
+        //    download_file(&http_client, &format!("https://{}/{}-{}", setup_url, latest_client_version, bootstrapper_filename), &latest_bootstrapper_path).await;
+       // }
 
         // Lets compare the SHA1 hash of the latest bootstrapper to the one we are currently running
         // If they are the same, then we can continue with the update process
@@ -278,7 +278,7 @@ async fn main() {
                         debug(&format!("Bootstrapper errored with error {}", e));
                         info("Found bootstrapper was corrupted! Downloading...");
                         std::fs::remove_file(latest_bootstrapper_path.clone()).unwrap();
-                        download_file(&http_client, &format!("https://{}/{}-{}", setup_url, latest_client_version, bootstrapper_filename), &latest_bootstrapper_path).await;
+                        //download_file(&http_client, &format!("https://{}/{}-{}", setup_url, latest_client_version, bootstrapper_filename), &latest_bootstrapper_path).await;
                         command.spawn().expect("Bootstrapper is still corrupted.");
                         std::thread::sleep(std::time::Duration::from_secs(20));
                     }
@@ -330,11 +330,11 @@ MimeType=x-scheme-handler/syntax-player;", latest_bootstrapper_path.to_str().unw
 
         let VersionURLPrefix = format!("https://{}/{}-", setup_url, latest_client_version);
 
-        let Client2018Zip : PathBuf = download_file_prefix(&http_client, format!("{}2018client.zip", VersionURLPrefix).as_str(), &temp_downloads_directory).await;
+        //let Client2018Zip : PathBuf = download_file_prefix(&http_client, format!("{}2018client.zip", VersionURLPrefix).as_str(), &temp_downloads_directory).await;
         let Client2020Zip : PathBuf = download_file_prefix(&http_client, format!("{}2020client.zip", VersionURLPrefix).as_str(), &temp_downloads_directory).await;
-        let Client2014Zip : PathBuf = download_file_prefix(&http_client, format!("{}2014client.zip", VersionURLPrefix).as_str(), &temp_downloads_directory).await;
-        let Client2016Zip : PathBuf = download_file_prefix(&http_client, format!("{}2016client.zip", VersionURLPrefix).as_str(), &temp_downloads_directory).await;
-        let Client2021Zip : PathBuf = download_file_prefix(&http_client, format!("{}2021client.zip", VersionURLPrefix).as_str(), &temp_downloads_directory).await;
+        //let Client2014Zip : PathBuf = download_file_prefix(&http_client, format!("{}2014client.zip", VersionURLPrefix).as_str(), &temp_downloads_directory).await;
+        //let Client2016Zip : PathBuf = download_file_prefix(&http_client, format!("{}2016client.zip", VersionURLPrefix).as_str(), &temp_downloads_directory).await;
+        //let Client2021Zip : PathBuf = download_file_prefix(&http_client, format!("{}2021client.zip", VersionURLPrefix).as_str(), &temp_downloads_directory).await;
         info("Download finished, extracting files.");
 
         fn extract_to_dir( zip_file : &PathBuf, target_dir : &PathBuf ) {
@@ -343,25 +343,25 @@ MimeType=x-scheme-handler/syntax-player;", latest_bootstrapper_path.to_str().unw
             zip_extract::extract(zip_file_cursor, target_dir, false).unwrap();
         }
 
-        let client_2018_directory = current_version_directory.join("Client2018");
-        create_folder_if_not_exists(&client_2018_directory).await;
-        extract_to_dir(&Client2018Zip, &client_2018_directory);
+        //let client_2018_directory = current_version_directory.join("Client2018");
+        //create_folder_if_not_exists(&client_2018_directory).await;
+        //extract_to_dir(&Client2018Zip, &client_2018_directory);
 
         let client_2020_directory = current_version_directory.join("Client2020");
         create_folder_if_not_exists(&client_2020_directory).await;
         extract_to_dir(&Client2020Zip, &client_2020_directory);
 
-        let client_2014_directory = current_version_directory.join("Client2014");
-        create_folder_if_not_exists(&client_2014_directory).await;
-        extract_to_dir(&Client2014Zip, &client_2014_directory);
+       // let client_2014_directory = current_version_directory.join("Client2014");
+        //create_folder_if_not_exists(&client_2014_directory).await;
+        //extract_to_dir(&Client2014Zip, &client_2014_directory);
 
-        let client_2016_directory = current_version_directory.join("Client2016");
-        create_folder_if_not_exists(&client_2016_directory).await;
-        extract_to_dir(&Client2016Zip, &client_2016_directory);
+       // let client_2016_directory = current_version_directory.join("Client2016");
+       // create_folder_if_not_exists(&client_2016_directory).await;
+       // extract_to_dir(&Client2016Zip, &client_2016_directory);
 
-        let client_2021_directory = current_version_directory.join("Client2021");
-        create_folder_if_not_exists(&client_2021_directory).await;
-        extract_to_dir(&Client2021Zip, &client_2021_directory);
+       // let client_2021_directory = current_version_directory.join("Client2021");
+       // create_folder_if_not_exists(&client_2021_directory).await;
+        //extract_to_dir(&Client2021Zip, &client_2021_directory);
 
         info("Finished extracting files, cleaning up.");
         std::fs::remove_dir_all(&temp_downloads_directory).unwrap();
